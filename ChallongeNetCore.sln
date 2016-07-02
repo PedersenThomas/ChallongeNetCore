@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChallongeNetCore", "src\ChallongeNetCore\ChallongeNetCore.xproj", "{EAB105CE-B948-47D8-A434-29EB0A8BCEFA}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ChallongeNetCoreTests", "test\ChallongeNetCoreTests\ChallongeNetCoreTests.xproj", "{92EACF67-961A-4358-91A1-F0AFD212E55F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6B06F967-BD6C-41B9-8002-D6505CDFAF2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,11 +26,16 @@ Global
 		{EAB105CE-B948-47D8-A434-29EB0A8BCEFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAB105CE-B948-47D8-A434-29EB0A8BCEFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAB105CE-B948-47D8-A434-29EB0A8BCEFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92EACF67-961A-4358-91A1-F0AFD212E55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92EACF67-961A-4358-91A1-F0AFD212E55F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92EACF67-961A-4358-91A1-F0AFD212E55F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92EACF67-961A-4358-91A1-F0AFD212E55F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EAB105CE-B948-47D8-A434-29EB0A8BCEFA} = {7FD07088-F23C-4928-A701-4925A14B7D4F}
+		{92EACF67-961A-4358-91A1-F0AFD212E55F} = {6B06F967-BD6C-41B9-8002-D6505CDFAF2B}
 	EndGlobalSection
 EndGlobal
