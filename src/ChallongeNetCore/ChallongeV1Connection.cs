@@ -124,6 +124,20 @@ namespace ChallongeNetCore
             throw new ChallongeException("Something went wrong sending the request.");
         }
 
+        private string DictionaryQuerystring(IDictionary<string, dynamic> dict)
+        {
+            var queryList = new List<string>();
+
+            foreach (KeyValuePair<string, dynamic> pair in dict)
+            {
+                var data = System.Uri.EscapeDataString(pair.Value.ToString());
+                queryList.Add(string.Format("{0}={1}", pair.Key, data));
+            }
+
+
+            return String.Join("&", queryList);
+        }
+
         private void DebugRequest(HttpClient client, HttpRequestMessage request)
         {
             DebugWriteline?.Invoke("---Request---");
@@ -150,20 +164,6 @@ namespace ChallongeNetCore
             DebugWriteline?.Invoke("---Response---");
             DebugWriteline?.Invoke(response.ToString());
             DebugWriteline?.Invoke("Request Headers");
-        }
-
-        private string DictionaryQuerystring(IDictionary<string, dynamic> dict)
-        {
-            var queryList = new List<string>();
-
-            foreach (KeyValuePair<string, dynamic> pair in dict)
-            {
-                var data = System.Uri.EscapeDataString(pair.Value.ToString());
-                queryList.Add(string.Format("{0}={1}", pair.Key, data ));
-            }
-
-
-            return String.Join("&", queryList);
         }
     }
 }

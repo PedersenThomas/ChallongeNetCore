@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace ChallongeNetCoreTests
 {
-    public class TournamentTest
+    public class TournamentTest: IDisposable
     {
         private ChallongeV1Connection client;
         private Tournament tournament;
@@ -17,11 +17,10 @@ namespace ChallongeNetCoreTests
         {
             client = new ChallongeV1Connection(Secrets.ChallongeUsername, Secrets.ChallongeApiKey);
             client.DebugWriteline = output.WriteLine;
-
-            //createTestTournament();
         }
 
-        private Tournament createTestTournament()
+        #region Helper
+        private async Task<Tournament> createTestTournamentAsync()
         {
             var name = "NetCoreTest" + TestHelper.RandomName();
 
@@ -31,39 +30,62 @@ namespace ChallongeNetCoreTests
                 .SetTournamentType(TournamentType.DoubleElimination)
                 .SetSubdomain(Secrets.ChallongeSubdomain);
 
-            var task = request.SendAsync();
-            task.Wait();
-            return task.Result;
+            return await request.SendAsync();
         }
+        #endregion
 
         [Fact]
         public async Task Index()
         {
-            var result = await client.Tournament.IndexRequest().SendAsync();
-            Assert.NotNull(result);
+            this.tournament = await createTestTournamentAsync();
 
-            Assert.True(false);
+            var allTournaments = await client.Tournament.IndexRequest()
+                .setSubdomain(Secrets.ChallongeSubdomain)
+                .SendAsync();
+            var expectedTournament = allTournaments.SingleOrDefault(t => t.Id == this.tournament.Id);
+
+            Assert.NotNull(expectedTournament);
+            Assert.Equal(expectedTournament.Name, this.tournament.Name);
         }
 
         [Fact]
         public async Task Show()
         {
-            var identifier = "RandomID";
-            var request = client.Tournament.ShowRequest(identifier);
-            request.IncludeParticipants = true;
-                
-            var result = await request.SendAsync();
-            Assert.NotNull(result.Participants);
+            this.tournament = await createTestTournamentAsync();
 
-            Assert.True(false);
+            var expectedTournament = await client.Tournament.ShowRequest(tournament.Id.ToString())
+                .setIncludeParticipants(true)
+                .SendAsync();
+
+            Assert.NotNull(expectedTournament);
+            Assert.Equal(this.tournament.Name, expectedTournament.Name);
+            Assert.NotNull(expectedTournament.Participants);
         }
 
-        [Fact]
-        public void TestConstructor()
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
         {
-            client.DebugWriteline("Test Constructor");
-            var tournament = createTestTournament();
-            Assert.NotNull(tournament);
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (tournament != null)
+                    {
+                        client.Tournament.DeleteRequest(tournament.Id.ToString()).SendAsync().Wait();
+                    }
+                }
+
+                disposedValue = true;
+            }
         }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+        #endregion
     }
 }

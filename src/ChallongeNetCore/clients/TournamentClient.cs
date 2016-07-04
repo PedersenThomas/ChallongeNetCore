@@ -42,5 +42,10 @@ namespace ChallongeNetCore
         {
             return new clients.TournamentRequest.ShowRequest(this.connection, identifier);
         }
+
+        public clients.TournamentRequest.DeleteRequest DeleteRequest(string identifier)
+        {
+            return new clients.TournamentRequest.DeleteRequest(this.connection, identifier);
+        }
     }
 }
