@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChallongeNetCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,32 @@ namespace ChallongeNetCoreTests
             }
 
             return builder.ToString();
+        }
+
+        internal static async Task<Tournament> createTestTournamentAsync(ChallongeV1Connection client)
+        {
+            var name = "NetCoreTest" + TestHelper.RandomName();
+
+            var request = client.Tournament.CreateRequest()
+                .SetName(name)
+                .SetUrl(name)
+                .SetTournamentType(TournamentType.DoubleElimination)
+                .SetSubdomain(Secrets.ChallongeSubdomain);
+
+            return await request.SendAsync();
+        }
+
+        internal static async Task<Tournament> addTestParticipantAsync(ChallongeV1Connection client, Tournament tournament)
+        {
+            var name = "NetCoreTest" + TestHelper.RandomName();
+            
+            var request = client.Tournament.CreateRequest()
+                .SetName(name)
+                .SetUrl(name)
+                .SetTournamentType(TournamentType.DoubleElimination)
+                .SetSubdomain(Secrets.ChallongeSubdomain);
+
+            return await request.SendAsync();
         }
     }
 }

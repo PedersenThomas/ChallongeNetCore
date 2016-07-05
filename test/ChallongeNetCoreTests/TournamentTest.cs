@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using System.Diagnostics;
 
 namespace ChallongeNetCoreTests
 {
@@ -18,26 +17,11 @@ namespace ChallongeNetCoreTests
             client = new ChallongeV1Connection(Secrets.ChallongeUsername, Secrets.ChallongeApiKey);
             client.DebugWriteline = output.WriteLine;
         }
-
-        #region Helper
-        private async Task<Tournament> createTestTournamentAsync()
-        {
-            var name = "NetCoreTest" + TestHelper.RandomName();
-
-            var request = client.Tournament.CreateRequest()
-                .SetName(name)
-                .SetUrl(name)
-                .SetTournamentType(TournamentType.DoubleElimination)
-                .SetSubdomain(Secrets.ChallongeSubdomain);
-
-            return await request.SendAsync();
-        }
-        #endregion
-
+        
         [Fact]
         public async Task Index()
         {
-            this.tournament = await createTestTournamentAsync();
+            this.tournament = await TestHelper.createTestTournamentAsync(client);
 
             var allTournaments = await client.Tournament.IndexRequest()
                 .setSubdomain(Secrets.ChallongeSubdomain)
@@ -51,7 +35,7 @@ namespace ChallongeNetCoreTests
         [Fact]
         public async Task Show()
         {
-            this.tournament = await createTestTournamentAsync();
+            this.tournament = await TestHelper.createTestTournamentAsync(client);
 
             var expectedTournament = await client.Tournament.ShowRequest(tournament.Id.ToString())
                 .setIncludeParticipants(true)
@@ -62,6 +46,20 @@ namespace ChallongeNetCoreTests
             Assert.NotNull(expectedTournament.Participants);
         }
 
+        //[Fact] NOT DONE.
+        public async Task Start()
+        {
+            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
+            
+            //TODO(TP): Add two participants
+
+            var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
+                .SendAsync();
+
+            Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
+        }
+        
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
