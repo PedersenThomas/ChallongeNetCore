@@ -101,7 +101,9 @@ namespace ChallongeNetCore
                         
                 request.RequestUri = new Uri(url);
                 request.Method = method;
-                request.Content = content;
+                if (dictionary != null && dictionary.Count > 0) {
+                    request.Content = content;
+                }
                         
                 //DebugRequest(client, request);
 
