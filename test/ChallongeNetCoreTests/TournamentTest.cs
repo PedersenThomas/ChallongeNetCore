@@ -1,6 +1,5 @@
 ﻿using ChallongeNetCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -46,13 +45,20 @@ namespace ChallongeNetCoreTests
             Assert.NotNull(expectedTournament.Participants);
         }
 
-        //[Fact] NOT DONE.
+        [Fact]
         public async Task Start()
         {
             this.tournament = await TestHelper.createTestTournamentAsync(client);
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
             
-            //TODO(TP): Add two participants
+            //Start requires at least two participants
+            await client.Participant.CreateRequest()
+                .SetName(TestHelper.RandomName())
+                .SendAsync(this.tournament.Id.ToString());
+                
+            await client.Participant.CreateRequest()
+                .SetName(TestHelper.RandomName())
+                .SendAsync(this.tournament.Id.ToString());
 
             var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
                 .SendAsync();
@@ -71,7 +77,8 @@ namespace ChallongeNetCoreTests
                 {
                     if (tournament != null)
                     {
-                        client.Tournament.DeleteRequest(tournament.Id.ToString()).SendAsync().Wait();
+                        client.Tournament.DeleteRequest(tournament.Id.ToString())
+                            .SendAsync().Wait();
                     }
                 }
 

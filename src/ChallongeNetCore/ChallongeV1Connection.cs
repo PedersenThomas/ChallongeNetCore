@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -29,7 +27,7 @@ namespace ChallongeNetCore
             this.credential = new NetworkCredential(this.Username, this.Apikey);
 
             this.Tournament = new TournamentClient(this);
-            //this.Participant = new ParticipantClient(this);
+            this.Participant = new ParticipantClient(this);
             //this.Match = new MatchClient(this);
         }
 
@@ -37,7 +35,7 @@ namespace ChallongeNetCore
         public string Apikey { get; private set; }
 
         public TournamentClient Tournament { get; private set; }
-        //public ParticipantClient Participant { get; private set; }
+        public ParticipantClient Participant { get; private set; }
         //public MatchClient Match { get; private set; }
 
         internal async Task<string> MakeJSONRequestAsync(string apiUrl, string httpMethod, IDictionary<string, dynamic> dictionary = null)

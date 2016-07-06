@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCore.clients
+﻿namespace ChallongeNetCore
 {
     public class ParticipantClient
     {
@@ -21,6 +16,15 @@ namespace ChallongeNetCore.clients
         public clients.ParticipantRequest.IndexRequest IndexRequest()
         {
             return new clients.ParticipantRequest.IndexRequest(this.connection);
+        }
+        
+        /// <summary>
+        /// Add a participant to a tournament (up until it is started). 
+        /// </summary>
+        /// <returns></returns>
+        public clients.ParticipantRequest.CreateRequest CreateRequest() 
+        {
+            return new clients.ParticipantRequest.CreateRequest(this.connection);
         }
     }
 }
