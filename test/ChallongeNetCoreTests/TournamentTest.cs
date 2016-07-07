@@ -23,7 +23,7 @@ namespace ChallongeNetCoreTests
             this.tournament = await TestHelper.createTestTournamentAsync(client);
 
             var allTournaments = await client.Tournament.IndexRequest()
-                .setSubdomain(Secrets.ChallongeSubdomain)
+                .SetSubdomain(Secrets.ChallongeSubdomain)
                 .SendAsync();
             var expectedTournament = allTournaments.SingleOrDefault(t => t.Id == this.tournament.Id);
 
@@ -37,7 +37,7 @@ namespace ChallongeNetCoreTests
             this.tournament = await TestHelper.createTestTournamentAsync(client);
 
             var expectedTournament = await client.Tournament.ShowRequest(tournament.Id.ToString())
-                .setIncludeParticipants(true)
+                .SetIncludeParticipants(true)
                 .SendAsync();
 
             Assert.NotNull(expectedTournament);

@@ -17,8 +17,8 @@ namespace ChallongeNetCore.clients.TournamentRequest
             this.TournamentIdentitier = Identifier;
         }
 
-        public StartRequest setIncludeParticipants(bool value) { parameters["include_participants"] = value ? 1 : 0; return this; }
-        public StartRequest setIncludeMatches(bool value) { parameters["include_matches"] = value ? 1 : 0; return this; }
+        public StartRequest SetIncludeParticipants(bool value) { parameters["include_participants"] = value ? 1 : 0; return this; }
+        public StartRequest SetIncludeMatches(bool value) { parameters["include_matches"] = value ? 1 : 0; return this; }
 
         public async Task<Tournament> SendAsync()
         {

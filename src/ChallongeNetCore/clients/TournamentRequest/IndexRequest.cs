@@ -15,11 +15,11 @@ namespace ChallongeNetCore.clients.TournamentRequest
             this.connection = connection;
         }
 
-        public IndexRequest setState(TournamentIndexState value) { parameters["state"] = value; return this; }
-        public IndexRequest setType(TournamentType value) { parameters["type"] = value; return this; }
-        public IndexRequest setCreatedAfter(DateTime value) { parameters["created_after"] = value; return this; }
-        public IndexRequest setCreatedBefore(DateTime value) { parameters["created_before"] = value; return this; }
-        public IndexRequest setSubdomain(string value) { parameters["subdomain"] = value; return this; }
+        public IndexRequest SetState(TournamentIndexState value) { parameters["state"] = value; return this; }
+        public IndexRequest SetType(TournamentType value) { parameters["type"] = value; return this; }
+        public IndexRequest SetCreatedAfter(DateTime value) { parameters["created_after"] = value; return this; }
+        public IndexRequest SetCreatedBefore(DateTime value) { parameters["created_before"] = value; return this; }
+        public IndexRequest SetSubdomain(string value) { parameters["subdomain"] = value; return this; }
 
 
         public async Task<IList<Tournament>> SendAsync()
