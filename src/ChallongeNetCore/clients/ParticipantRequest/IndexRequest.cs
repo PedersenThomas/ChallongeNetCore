@@ -8,10 +8,12 @@ namespace ChallongeNetCore.clients.ParticipantRequest
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
         public ChallongeV1Connection connection { get; private set; }
+        public string TournamentIdentifier { get; private set; }
 
-        public IndexRequest(ChallongeV1Connection connection)
+        public IndexRequest(ChallongeV1Connection connection, string tournamentIdentifier)
         {
             this.connection = connection;
+            this.TournamentIdentifier = tournamentIdentifier;
         }
 
 

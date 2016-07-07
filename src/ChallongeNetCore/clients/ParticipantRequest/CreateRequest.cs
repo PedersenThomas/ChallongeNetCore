@@ -7,11 +7,13 @@ namespace ChallongeNetCore.clients.ParticipantRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
-        public ChallongeV1Connection connection { get; private set; }
+        public ChallongeV1Connection Connection { get; private set; }
+        public string TournamentIdentifier {get; private set;}
 
-        public CreateRequest(ChallongeV1Connection connection)
+        public CreateRequest(ChallongeV1Connection connection, string tournamentIdentifier)
         {
-            this.connection = connection;
+            this.Connection = connection;
+            this.TournamentIdentifier = tournamentIdentifier;
         }
 
         public CreateRequest SetName(string value) { parameters["name"] = value; return this; }
@@ -21,12 +23,12 @@ namespace ChallongeNetCore.clients.ParticipantRequest
         public CreateRequest SetMisc(string value) { parameters["misc"] = value; return this; }
 
 
-        public async Task<Participant> SendAsync(string TournamentIdentifier)
+        public async Task<Participant> SendAsync()
         {
             string apiUrl = $"/tournaments/{TournamentIdentifier}/participants";
             const string method = "POST";
             var finalParameters = new Dictionary<string, dynamic> { { "participant", parameters } };
-            var jsonString = await connection.MakeJSONRequestAsync(apiUrl, method, parameters);
+            var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, parameters);
             return Deserializer.Participant(jsonString);
         }
     }

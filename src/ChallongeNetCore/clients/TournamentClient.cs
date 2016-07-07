@@ -67,5 +67,15 @@
         {
             return new clients.TournamentRequest.FinalizeRequest(this.connection, identifier);
         }
+
+        /// <summary>
+        /// Update a tournament's attributes. 
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        public clients.TournamentRequest.UpdateRequest UpdateRequest(string identifier)
+        {
+            return new clients.TournamentRequest.UpdateRequest(this.connection, identifier);
+        }
     }
 }

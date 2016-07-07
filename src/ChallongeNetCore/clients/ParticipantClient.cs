@@ -13,18 +13,18 @@
         /// Retrieve a tournament's participant list.
         /// </summary>
         /// <returns></returns>
-        public clients.ParticipantRequest.IndexRequest IndexRequest()
+        public clients.ParticipantRequest.IndexRequest IndexRequest(string tournamentIdentifier)
         {
-            return new clients.ParticipantRequest.IndexRequest(this.connection);
+            return new clients.ParticipantRequest.IndexRequest(this.connection, tournamentIdentifier);
         }
         
         /// <summary>
         /// Add a participant to a tournament (up until it is started). 
         /// </summary>
         /// <returns></returns>
-        public clients.ParticipantRequest.CreateRequest CreateRequest() 
+        public clients.ParticipantRequest.CreateRequest CreateRequest(string tournamentIdentifier) 
         {
-            return new clients.ParticipantRequest.CreateRequest(this.connection);
+            return new clients.ParticipantRequest.CreateRequest(this.connection, tournamentIdentifier);
         }
     }
 }

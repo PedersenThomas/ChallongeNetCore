@@ -44,6 +44,18 @@ namespace ChallongeNetCoreTests
             Assert.Equal(this.tournament.Name, expectedTournament.Name);
             Assert.NotNull(expectedTournament.Participants);
         }
+        
+        [Fact]
+        public async Task Update() {
+            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            
+            var newName = "NetCoreTest" + TestHelper.RandomName();
+            var updatedTournament = await client.Tournament.UpdateRequest(this.tournament.Id.ToString())
+                .SetName(newName)
+                .SendAsync();
+            
+            Assert.Equal(newName, updatedTournament?.Name);
+        }
 
         [Fact]
         public async Task Start()
@@ -52,13 +64,13 @@ namespace ChallongeNetCoreTests
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
             
             //Start requires at least two participants
-            await client.Participant.CreateRequest()
+            await client.Participant.CreateRequest(this.tournament.Id.ToString())
                 .SetName(TestHelper.RandomName())
-                .SendAsync(this.tournament.Id.ToString());
+                .SendAsync();
                 
-            await client.Participant.CreateRequest()
+            await client.Participant.CreateRequest(this.tournament.Id.ToString())
                 .SetName(TestHelper.RandomName())
-                .SendAsync(this.tournament.Id.ToString());
+                .SendAsync();
 
             var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
                 .SendAsync();
