@@ -64,13 +64,24 @@ namespace ChallongeNetCoreTests
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
             
             //Start requires at least two participants
-            await client.Participant.CreateRequest(this.tournament.Id.ToString())
-                .SetName(TestHelper.RandomName())
+            await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+
+            var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
                 .SendAsync();
-                
-            await client.Participant.CreateRequest(this.tournament.Id.ToString())
-                .SetName(TestHelper.RandomName())
-                .SendAsync();
+
+            Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
+        }
+
+        //[Fact]
+        public async Task Finalize()
+        {
+            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
+            
+            //Start requires at least two participants
+            await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            await TestHelper.CreateTestParticipantAsync(client, this.tournament);
 
             var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
                 .SendAsync();

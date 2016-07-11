@@ -33,6 +33,14 @@ namespace ChallongeNetCoreTests
 
             return await request.SendAsync();
         }
+        
+        internal static async Task<Participant> CreateTestParticipantAsync(ChallongeV1Connection client, Tournament tournament) {
+            var name = TestHelper.RandomName();
+            
+            return await client.Participant.CreateRequest(tournament.Id.ToString())
+                .SetName(name)
+                .SendAsync();
+        }
 
         internal static async Task<Tournament> addTestParticipantAsync(ChallongeV1Connection client, Tournament tournament)
         {
