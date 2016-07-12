@@ -20,7 +20,7 @@ namespace ChallongeNetCoreTests
         [Fact]
         public async Task Index()
         {
-            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
 
             var allTournaments = await client.Tournament.IndexRequest()
                 .SetSubdomain(Secrets.ChallongeSubdomain)
@@ -34,7 +34,7 @@ namespace ChallongeNetCoreTests
         [Fact]
         public async Task Show()
         {
-            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
 
             var expectedTournament = await client.Tournament.ShowRequest(tournament.Id.ToString())
                 .SetIncludeParticipants(true)
@@ -47,7 +47,7 @@ namespace ChallongeNetCoreTests
         
         [Fact]
         public async Task Update() {
-            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             
             var newName = "NetCoreTest" + TestHelper.RandomName();
             var updatedTournament = await client.Tournament.UpdateRequest(this.tournament.Id.ToString())
@@ -60,7 +60,7 @@ namespace ChallongeNetCoreTests
         [Fact]
         public async Task Start()
         {
-            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
             
             //Start requires at least two participants
@@ -76,7 +76,7 @@ namespace ChallongeNetCoreTests
         //[Fact]
         public async Task Finalize()
         {
-            this.tournament = await TestHelper.createTestTournamentAsync(client);
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
             
             //Start requires at least two participants

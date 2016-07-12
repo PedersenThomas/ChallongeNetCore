@@ -21,7 +21,7 @@ namespace ChallongeNetCoreTests
             return builder.ToString();
         }
 
-        internal static async Task<Tournament> createTestTournamentAsync(ChallongeV1Connection client)
+        internal static async Task<Tournament> CreateTestTournamentAsync(ChallongeV1Connection client)
         {
             var name = "NetCoreTest" + TestHelper.RandomName();
 
