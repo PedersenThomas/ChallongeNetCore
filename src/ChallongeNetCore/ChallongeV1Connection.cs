@@ -38,90 +38,93 @@ namespace ChallongeNetCore
         public ParticipantClient Participant { get; private set; }
         //public MatchClient Match { get; private set; }
 
-        internal async Task<string> MakeJSONRequestAsync(string apiUrl, string httpMethod, IDictionary<string, dynamic> dictionary = null)
+        internal async Task<string> MakeJSONRequestAsync(string apiUrl, string httpMethod, IDictionary<string, dynamic> Parameters = null)
         {
             const string ResponseType = "json";
             var url = string.Format("{0}{1}.{2}", BaseUrl, apiUrl, ResponseType);
             
             using (var client = new HttpClient())
             {
-                var byteArray = Encoding.ASCII.GetBytes($"{this.Username}:{this.Apikey}");
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                DebugWriteline?.Invoke(client.DefaultRequestHeaders.ToString());
+                ApplyAuth(client);
 
                 HttpContent content = null;
                 switch (httpMethod)
                 {
                     case "GET":
-                        if (dictionary != null && dictionary.Count > 0)
+                        if (Parameters != null && Parameters.Count > 0)
                         {
-                            url += "?" + this.DictionaryQuerystring(dictionary);
+                            url += "?" + this.DictionaryQuerystring(Parameters);
                         }
 
                         break;
                     case "POST":
                     case "PUT":
                     case "DELETE":
-                        var encoding = new UTF8Encoding();
-                        var json = JsonConvert.SerializeObject(dictionary);
-                        content = new StringContent(json);
-                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                        DebugWriteline?.Invoke("JSON: " + json);
+                        content = constructJsonContent(Parameters);
                         break;
                     default:
                         throw new ChallongeException("Unknown HttpMethod: " + httpMethod);
                 }
-
-                HttpResponseMessage response;
-                HttpMethod method = default(HttpMethod);
-                switch (httpMethod)
-                {
-                    case "GET":
-                        method = HttpMethod.Get;
-                        break;
-                    case "POST":
-                        method = HttpMethod.Post;
-                        break;
-                    case "PUT":
-                        method = HttpMethod.Put;
-                        break;
-                    case "DELETE":
-                        method = HttpMethod.Delete;
-                        break;
-                    default:
-                        throw new ChallongeException("Unknown HttpMethod: " + httpMethod);
-                }
-
-                
-                HttpRequestMessage request = new HttpRequestMessage();
                 DebugWriteline?.Invoke(httpMethod + " " + url);
-                        
+
+                HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(url);
-                request.Method = method;
-                if (dictionary != null && dictionary.Count > 0) {
+                request.Method = parseMethod(httpMethod);
+                if (Parameters != null && Parameters.Count > 0)
+                {
                     request.Content = content;
                 }
-                        
+
                 //DebugRequest(client, request);
 
-                response = await client.SendAsync(request);
+                HttpResponseMessage response = await client.SendAsync(request);
+                var responseContent = await response.Content.ReadAsStringAsync();
 
-                var responseString = await response.Content.ReadAsStringAsync();
-                
-                DebugResponse(response);
-                DebugWriteline?.Invoke(responseString);
+                DebugResponse(response, responseContent);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return responseString;
+                    return responseContent;
                 }
-                else
-                {
-                    throw new ChallongeException(responseString);
-                }
+                
+                throw new ChallongeException(responseContent);
             }
             throw new ChallongeException("Something went wrong sending the request.");
+        }
+
+        private void ApplyAuth(HttpClient client)
+        {
+            var byteArray = Encoding.ASCII.GetBytes($"{this.Username}:{this.Apikey}");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            DebugWriteline?.Invoke(client.DefaultRequestHeaders.ToString());
+        }
+
+        private HttpContent constructJsonContent(IDictionary<string, dynamic> dictionary)
+        {
+            var json = JsonConvert.SerializeObject(dictionary);
+            HttpContent content = new StringContent(json);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            
+            DebugWriteline?.Invoke("JSON: " + json);
+
+            return content;
+        }
+
+        private static HttpMethod parseMethod(string httpMethod)
+        {
+            switch (httpMethod)
+            {
+                case "GET":
+                    return HttpMethod.Get;
+                case "POST":
+                    return HttpMethod.Post;
+                case "PUT":
+                    return HttpMethod.Put;
+                case "DELETE":
+                    return HttpMethod.Delete;
+                default:
+                    throw new ChallongeException("Unknown HttpMethod: " + httpMethod);
+            }
         }
 
         private string DictionaryQuerystring(IDictionary<string, dynamic> dict)
@@ -159,11 +162,14 @@ namespace ChallongeNetCore
             }
         }
 
-        private void DebugResponse(HttpResponseMessage response)
+        private void DebugResponse(HttpResponseMessage response, string responseContent)
         {
             DebugWriteline?.Invoke("---Response---");
             DebugWriteline?.Invoke(response.ToString());
             DebugWriteline?.Invoke("Request Headers");
+
+
+            DebugWriteline?.Invoke(responseContent);
         }
     }
 }
