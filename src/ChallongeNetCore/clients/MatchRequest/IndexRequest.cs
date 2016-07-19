@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChallongeNetCore.clients.ParticipantRequest
+namespace ChallongeNetCore.clients.MatchRequest
 {
     public class IndexRequest
     {
@@ -16,12 +18,23 @@ namespace ChallongeNetCore.clients.ParticipantRequest
             this.TournamentIdentifier = tournamentIdentifier;
         }
 
-        public async Task<IList<Tournament>> SendAsync(string TournamentIdentifier)
+        public IndexRequest setState(MatchIndexState value) { parameters["state"] = value; return this; }
+        public IndexRequest setParticipantId(int value) { parameters["participant_id"] = value; return this; }
+
+        public async Task<IEnumerable<Match>> SendAsync()
         {
-            string apiUrl = $"/tournaments/{TournamentIdentifier}/participants";
+            string apiUrl = $"/tournaments/{this.TournamentIdentifier}/matches";
             const string method = "GET";
             var jsonString = await connection.MakeJSONRequestAsync(apiUrl, method, parameters);
-            return Deserializer.ListOfTournaments(jsonString);
+            return Deserializer.ListOfMatches(jsonString);
+        }
+
+        public enum MatchIndexState
+        {
+            all,
+            pending,
+            in_progress,
+            ended
         }
     }
 }

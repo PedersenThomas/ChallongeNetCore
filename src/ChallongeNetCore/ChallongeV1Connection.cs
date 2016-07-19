@@ -28,7 +28,7 @@ namespace ChallongeNetCore
 
             this.Tournament = new TournamentClient(this);
             this.Participant = new ParticipantClient(this);
-            //this.Match = new MatchClient(this);
+            this.Match = new MatchClient(this);
         }
 
         public string Username { get; private set; }
@@ -36,7 +36,7 @@ namespace ChallongeNetCore
 
         public TournamentClient Tournament { get; private set; }
         public ParticipantClient Participant { get; private set; }
-        //public MatchClient Match { get; private set; }
+        public MatchClient Match { get; private set; }
 
         internal async Task<string> MakeJSONRequestAsync(string apiUrl, string httpMethod, IDictionary<string, dynamic> Parameters = null)
         {
@@ -74,8 +74,6 @@ namespace ChallongeNetCore
                 {
                     request.Content = content;
                 }
-
-                //DebugRequest(client, request);
 
                 HttpResponseMessage response = await client.SendAsync(request);
                 var responseContent = await response.Content.ReadAsStringAsync();

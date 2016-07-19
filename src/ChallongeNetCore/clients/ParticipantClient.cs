@@ -26,5 +26,13 @@
         {
             return new clients.ParticipantRequest.CreateRequest(this.connection, tournamentIdentifier);
         }
+
+        //Bulk Add
+        //Show
+        //Update
+        //Check in
+        //Undo Check in
+        //Destroy
+        //Randomize
     }
 }
