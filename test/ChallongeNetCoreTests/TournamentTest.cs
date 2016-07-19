@@ -73,20 +73,30 @@ namespace ChallongeNetCoreTests
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
         }
 
-        //[Fact]
+        [Fact]
         public async Task Finalize()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
             
             //Start requires at least two participants
-            await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            var p1 = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
             await TestHelper.CreateTestParticipantAsync(client, this.tournament);
 
             var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
                 .SendAsync();
 
-            Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
+            var matches = await client.Match.IndexRequest(startedTournament.Id.ToString()).SendAsync();
+            Assert.Equal(1, matches.Count());
+
+            var match = matches.First();
+            await client.Match.UpdateRequest(startedTournament.Id.ToString(), match.Id)
+                .setScoresCsv("1-0")
+                .setWinnerId(p1.Id)
+                .SendAsync();
+
+            var finalTournament = await client.Tournament.FinalizeRequest(this.tournament.Id.ToString()).SendAsync();
+            Assert.Equal(TournamentState.complete, finalTournament.Tournamentstate);
         }
         
         #region IDisposable Support

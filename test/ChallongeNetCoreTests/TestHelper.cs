@@ -28,7 +28,7 @@ namespace ChallongeNetCoreTests
             var request = client.Tournament.CreateRequest()
                 .SetName(name)
                 .SetUrl(name)
-                .SetTournamentType(TournamentType.DoubleElimination)
+                .SetTournamentType(TournamentType.SingleElimination)
                 .SetSubdomain(Secrets.ChallongeSubdomain);
 
             return await request.SendAsync();
