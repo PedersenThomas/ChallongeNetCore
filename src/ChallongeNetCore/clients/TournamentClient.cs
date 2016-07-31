@@ -31,7 +31,7 @@
         /// Retrieve a single tournament record created with your account.
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="parameters"></param>
+        /// <param name="parameters">Tournament identifier (ID or tournament_url or subdomain-tournament_url if subdomains are used)</param>
         /// <returns></returns>
         public clients.TournamentRequest.ShowRequest ShowRequest(string identifier)
         {
@@ -41,7 +41,7 @@
         /// <summary>
         /// Deletes a tournament along with all its associated records. There is no undo, so use with care!
         /// </summary>
-        /// <param name="identifier"></param>
+        /// <param name="identifier">Tournament identifier (ID or tournament_url or subdomain-tournament_url if subdomains are used)</param>
         /// <returns></returns>
         public clients.TournamentRequest.DeleteRequest DeleteRequest(string identifier)
         {
@@ -51,7 +51,7 @@
         /// <summary>
         /// Start a tournament, opening up first round matches for score reporting. The tournament must have at least 2 participants.
         /// </summary>
-        /// <param name="identifier"></param>
+        /// <param name="identifier">Tournament identifier (ID or tournament_url or subdomain-tournament_url if subdomains are used)</param>
         /// <returns></returns>
         public clients.TournamentRequest.StartRequest StartRequest(string identifier)
         {
@@ -59,9 +59,19 @@
         }
 
         /// <summary>
+        /// Reset a tournament, clearing all of its scores and attachments. You can then add/remove/edit participants before starting the tournament again.
+        /// </summary>
+        /// <param name="identifier">Tournament identifier (ID or tournament_url or subdomain-tournament_url if subdomains are used)</param>
+        /// <returns></returns>
+        public clients.TournamentRequest.ResetRequest ResetRequest(string identifier)
+        {
+            return new clients.TournamentRequest.ResetRequest(this.connection, identifier);
+        }
+
+        /// <summary>
         /// Finalize a tournament that has had all match scores submitted, rendering its results permanent.
         /// </summary>
-        /// <param name="identifier"></param>
+        /// <param name="identifier">Tournament identifier (ID or tournament_url or subdomain-tournament_url if subdomains are used)</param>
         /// <returns></returns>
         public clients.TournamentRequest.FinalizeRequest FinalizeRequest(string identifier)
         {
@@ -71,7 +81,7 @@
         /// <summary>
         /// Update a tournament's attributes. 
         /// </summary>
-        /// <param name="identifier"></param>
+        /// <param name="identifier">Tournament identifier (ID or tournament_url or subdomain-tournament_url if subdomains are used)</param>
         /// <returns></returns>
         public clients.TournamentRequest.UpdateRequest UpdateRequest(string identifier)
         {

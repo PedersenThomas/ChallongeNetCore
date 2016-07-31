@@ -31,7 +31,7 @@
   },
   "buildOptions": {
     "copyToOutput": {
-      "include": [ "project.json" ]
+      "include": [ "project.json", "xunit.runner.json" ]
     }
   }
 }

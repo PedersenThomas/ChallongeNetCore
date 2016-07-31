@@ -70,7 +70,7 @@ namespace ChallongeNetCoreTests
             var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
                 .SendAsync();
 
-            Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
+            Assert.Equal(TournamentState.underway, startedTournament.Tournamentstate);
         }
 
         [Fact]
@@ -98,7 +98,29 @@ namespace ChallongeNetCoreTests
             var finalTournament = await client.Tournament.FinalizeRequest(this.tournament.Id.ToString()).SendAsync();
             Assert.Equal(TournamentState.complete, finalTournament.Tournamentstate);
         }
-        
+
+        [Fact]
+        public async Task Reset()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
+
+            //Start requires at least two participants
+            await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+
+            var startedTournament = await client.Tournament.StartRequest(tournament.Id.ToString())
+                .SendAsync();
+
+            Assert.Equal(TournamentState.underway, startedTournament.Tournamentstate);
+
+            var resetTournament = await client.Tournament.ResetRequest(tournament.Id.ToString())
+                .SendAsync();
+
+            Assert.Equal(TournamentState.pending, resetTournament.Tournamentstate);
+        }
+
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
