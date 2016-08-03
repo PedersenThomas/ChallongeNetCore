@@ -20,7 +20,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task CreateParticipant()
+        public async Task Create()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             var participantName = TestHelper.RandomName();
@@ -30,6 +30,43 @@ namespace ChallongeNetCoreTests
 
             Assert.NotNull(participant);
             Assert.Equal(participantName, participant.Name);
+        }
+
+        [Fact]
+        public async Task Index()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            var participant1 = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            var participant2 = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+
+            var allParticipants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
+                .SendAsync();
+
+            Assert.True(allParticipants.Any(p => p.Id == participant1.Id));
+            Assert.True(allParticipants.Any(p => p.Id == participant2.Id));
+        }
+
+        [Fact]
+        public async Task Show()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            var participant1 = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            var participant2 = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+
+            var allParticipants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
+                .SendAsync();
+
+            Assert.True(allParticipants.Any(p => p.Id == participant1.Id));
+            Assert.True(allParticipants.Any(p => p.Id == participant2.Id));
+        }
+
+        public async Task UpdateParticipant()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            var participant = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            var newName = "new" + TestHelper.RandomName();
+
+            //var updatedParticipant = await client.Participant.
         }
 
         #region IDisposable Support
