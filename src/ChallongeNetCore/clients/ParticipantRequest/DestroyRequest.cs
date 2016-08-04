@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ChallongeNetCore.clients.ParticipantRequest
 {
-    public class ShowRequest
+    public class DestroyRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
@@ -13,7 +13,7 @@ namespace ChallongeNetCore.clients.ParticipantRequest
         public string TournamentIdentifier { get; private set; }
         public string ParticipantIdentifier { get; private set; }
 
-        public ShowRequest(ChallongeV1Connection connection, string tournamentIdentifier, string participantIdentifier)
+        public DestroyRequest(ChallongeV1Connection connection, string tournamentIdentifier, string participantIdentifier)
         {
             this.Connection = connection;
             this.TournamentIdentifier = tournamentIdentifier;
@@ -23,7 +23,7 @@ namespace ChallongeNetCore.clients.ParticipantRequest
         public async Task<Participant> SendAsync()
         {
             string apiUrl = $"/tournaments/{this.TournamentIdentifier}/participants/{this.ParticipantIdentifier}";
-            const string method = "GET";
+            const string method = "DELETE";
             var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, parameters);
             return Deserializer.Participant(jsonString);
         }

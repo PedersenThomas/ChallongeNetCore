@@ -18,7 +18,7 @@ namespace ChallongeNetCoreTests
         }
         
         [Fact]
-        public async Task Index()
+        public async Task IndexTournament()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
 
@@ -32,7 +32,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task Show()
+        public async Task ShowTournament()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
 
@@ -46,7 +46,7 @@ namespace ChallongeNetCoreTests
         }
         
         [Fact]
-        public async Task Update() {
+        public async Task UpdateTournament() {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             
             var newName = "NetCoreTest" + TestHelper.RandomName();
@@ -58,7 +58,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task Start()
+        public async Task StartTournament()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
@@ -74,7 +74,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task Finalize()
+        public async Task FinalizeTournament()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);
@@ -100,7 +100,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task Reset()
+        public async Task ResetTournament()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             Assert.Equal(TournamentState.pending, this.tournament.Tournamentstate);

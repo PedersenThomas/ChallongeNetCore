@@ -8,13 +8,13 @@ namespace ChallongeNetCore.clients.TournamentRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
-        public ChallongeV1Connection connection { get; private set; }
-        public string identifier { get; private set; }
+        public ChallongeV1Connection Connection { get; private set; }
+        public string Identifier { get; private set; }
 
         public UpdateRequest(ChallongeV1Connection connection, string identifier)
         {
-            this.connection = connection;
-            this.identifier = identifier;
+            this.Connection = connection;
+            this.Identifier = identifier;
         }
 
         public UpdateRequest SetName(string value) { parameters["name"] = value; return this; }
@@ -48,11 +48,11 @@ namespace ChallongeNetCore.clients.TournamentRequest
 
         public async Task<Tournament> SendAsync()
         {
-            string apiUrl = $"/tournaments/{identifier}";
+            string apiUrl = $"/tournaments/{Identifier}";
             const string method = "PUT";
             var finalParameters = new Dictionary<string, dynamic> { { "tournament", parameters } };
-            var jsonString = await connection.MakeJSONRequestAsync(apiUrl, method, finalParameters);
-            this.connection.DebugWriteline?.Invoke("Response body: " + jsonString);
+            var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, finalParameters);
+            this.Connection.DebugWriteline?.Invoke("Response body: " + jsonString);
             return Deserializer.Tournament(jsonString);
         }
     }

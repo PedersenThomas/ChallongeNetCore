@@ -8,11 +8,11 @@ namespace ChallongeNetCore.clients.TournamentRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
-        public ChallongeV1Connection connection { get; private set; }
+        public ChallongeV1Connection Connection { get; private set; }
 
         public CreateRequest(ChallongeV1Connection connection)
         {
-            this.connection = connection;
+            this.Connection = connection;
         }
 
         public CreateRequest SetName(string value) { parameters["name"] = value; return this; }
@@ -51,8 +51,8 @@ namespace ChallongeNetCore.clients.TournamentRequest
             const string apiUrl = "/tournaments";
             const string method = "POST";
             var finalParameters = new Dictionary<string, dynamic> { { "tournament", parameters } };
-            var jsonString = await connection.MakeJSONRequestAsync(apiUrl, method, finalParameters);
-            this.connection.DebugWriteline?.Invoke("Response body: " + jsonString);
+            var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, finalParameters);
+            this.Connection.DebugWriteline?.Invoke("Response body: " + jsonString);
             return Deserializer.Tournament(jsonString);
         }
     }

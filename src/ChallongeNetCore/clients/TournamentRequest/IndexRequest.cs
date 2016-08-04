@@ -8,11 +8,11 @@ namespace ChallongeNetCore.clients.TournamentRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
-        public ChallongeV1Connection connection { get; private set; }
+        public ChallongeV1Connection Connection { get; private set; }
 
         public IndexRequest(ChallongeV1Connection connection)
         {
-            this.connection = connection;
+            this.Connection = connection;
         }
 
         public IndexRequest SetState(TournamentIndexState value) { parameters["state"] = value; return this; }
@@ -26,7 +26,7 @@ namespace ChallongeNetCore.clients.TournamentRequest
         {
             const string apiUrl = "/tournaments";
             const string method = "GET";
-            var jsonString = await connection.MakeJSONRequestAsync(apiUrl, method, parameters);
+            var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, parameters);
             return Deserializer.ListOfTournaments(jsonString);
         }
 

@@ -20,7 +20,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task Create()
+        public async Task CreateParticipant()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             var participantName = TestHelper.RandomName();
@@ -33,7 +33,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task Index()
+        public async Task IndexParticipant()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             var participant1 = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
@@ -47,7 +47,7 @@ namespace ChallongeNetCoreTests
         }
 
         [Fact]
-        public async Task Show()
+        public async Task ShowParticipant()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             var participant1 = await TestHelper.CreateTestParticipantAsync(client, this.tournament);

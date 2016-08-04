@@ -51,10 +51,29 @@
             return new clients.ParticipantRequest.UpdateRequest(this.connection, tournamentIdentifier, participantIdentifier);
         }
 
+        /// <summary>
+        /// If the tournament has not started, delete a participant, automatically filling in the abandoned seed number. If tournament is underway, mark a participant inactive, automatically forfeiting his/her remaining matches.
+        /// </summary>
+        /// <param name="tournamentIdentifier">Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim). If assigned to a subdomain, URL format must be subdomain-tournament_url (e.g. 'test-mytourney' for test.challonge.com/mytourney)</param>
+        /// <param name="participantIdentifier">The participant's unique ID</param>
+        /// <returns></returns>
+        public clients.ParticipantRequest.DestroyRequest DestroyRequest(string tournamentIdentifier, string participantIdentifier)
+        {
+            return new clients.ParticipantRequest.DestroyRequest(this.connection, tournamentIdentifier, participantIdentifier);
+        }
+
+        /// <summary>
+        /// Randomize seeds among participants. Only applicable before a tournament has started.
+        /// </summary>
+        /// <param name="tournamentIdentifier">Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim). If assigned to a subdomain, URL format must be subdomain-tournament_url (e.g. 'test-mytourney' for test.challonge.com/mytourney)</param>
+        /// <returns></returns>
+        public clients.ParticipantRequest.RandomizeRequest RandomizeRequest(string tournamentIdentifier)
+        {
+            return new clients.ParticipantRequest.RandomizeRequest(this.connection, tournamentIdentifier);
+        }
+
         //Bulk Add
         //Check in
         //Undo Check in
-        //Destroy
-        //Randomize
     }
 }

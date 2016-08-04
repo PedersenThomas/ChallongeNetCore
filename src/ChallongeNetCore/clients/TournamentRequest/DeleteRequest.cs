@@ -7,13 +7,13 @@ namespace ChallongeNetCore.clients.TournamentRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
-        public ChallongeV1Connection connection { get; private set; }
+        public ChallongeV1Connection Connection { get; private set; }
 
         private string TournamentIdentitier { get; set; }
 
         public DeleteRequest(ChallongeV1Connection connection, string Identifier)
         {
-            this.connection = connection;
+            this.Connection = connection;
             this.TournamentIdentitier = Identifier;
         }
 
@@ -24,7 +24,7 @@ namespace ChallongeNetCore.clients.TournamentRequest
         {
             string apiUrl = $"/tournaments/{TournamentIdentitier}";
             const string method = "DELETE";
-            var jsonString = await connection.MakeJSONRequestAsync(apiUrl, method, parameters);
+            var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, parameters);
             return Deserializer.Tournament(jsonString);
         }
     }
