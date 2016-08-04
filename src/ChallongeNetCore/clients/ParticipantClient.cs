@@ -40,9 +40,18 @@
             return new clients.ParticipantRequest.ShowRequest(this.connection, tournamentIdentifier, participantIdentifier);
         }
 
+        /// <summary>
+        /// Update the attributes of a tournament participant.
+        /// </summary>
+        /// <param name="tournamentIdentifier">Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim). If assigned to a subdomain, URL format must be subdomain-tournament_url (e.g. 'test-mytourney' for test.challonge.com/mytourney)</param>
+        /// <param name="participantIdentifier">The participant's unique ID</param>
+        /// <returns></returns>
+        public clients.ParticipantRequest.UpdateRequest UpdateRequest(string tournamentIdentifier, string participantIdentifier)
+        {
+            return new clients.ParticipantRequest.UpdateRequest(this.connection, tournamentIdentifier, participantIdentifier);
+        }
+
         //Bulk Add
-        //Show
-        //Update
         //Check in
         //Undo Check in
         //Destroy

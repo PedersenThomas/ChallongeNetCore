@@ -60,13 +60,18 @@ namespace ChallongeNetCoreTests
             Assert.True(allParticipants.Any(p => p.Id == participant2.Id));
         }
 
+        [Fact]
         public async Task UpdateParticipant()
         {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);
             var participant = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
             var newName = "new" + TestHelper.RandomName();
 
-            //var updatedParticipant = await client.Participant.
+            var updatedParticipant = await client.Participant.UpdateRequest(this.tournament.Id.ToString(), participant.Id.ToString())
+                .SetName(newName)
+                .SendAsync();
+
+            Assert.Equal(newName, updatedParticipant.Name);
         }
 
         #region IDisposable Support
