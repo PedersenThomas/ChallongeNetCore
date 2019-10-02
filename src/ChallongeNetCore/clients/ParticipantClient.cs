@@ -72,16 +72,7 @@
             return new clients.ParticipantRequest.RandomizeRequest(this.connection, tournamentIdentifier);
         }
 
-        /// <summary>
-        /// Bulk add participants to a tournament (up until it is started). If an invalid participant is detected, bulk participant creation will halt and any previously added participants (from this API request) will be rolled back.
-        /// </summary>
-        /// <param name="tournamentIdentifier">Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim). If assigned to a subdomain, URL format must be subdomain-tournament_url (e.g. 'test-mytourney' for test.challonge.com/mytourney)</param>
-        /// <returns></returns>
-        public clients.ParticipantRequest.BulkAddRequest BulkAddRequest(string tournamentIdentifier)
-        {
-            return new clients.ParticipantRequest.BulkAddRequest(this.connection, tournamentIdentifier);
-        }
-        
+        //Bulk Add
         //Check in
         //Undo Check in
     }
