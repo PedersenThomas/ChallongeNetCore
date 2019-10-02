@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+[assembly: InternalsVisibleTo("ChallongeNetCoreTests")]
 namespace ChallongeNetCore
 {
 #pragma warning disable 0649
@@ -15,19 +17,19 @@ namespace ChallongeNetCore
 
     public class WrapperParticipant
     {
-        [JsonPropertyName("Participant")]
+        [JsonPropertyName("participant")]
         public Participant Participant { get; set; }
     }
 
     public class WrapperMatch
     {
-        [JsonPropertyName("Match")]
+        [JsonPropertyName("match")]
         public Match Match { get; set; }
     }
 
     public class WrapperAttachment
     {
-        [JsonPropertyName("Attachment")]
+        [JsonPropertyName("attachment")]
         public Attachment Attachment { get; set; }
     }
 #pragma warning restore 0649
@@ -38,7 +40,8 @@ namespace ChallongeNetCore
             {
                 new TournamentRankedByConverter(),
                 new TournamentTypeConverter(),
-                new TournamentStateConverter()
+                new TournamentStateConverter(),
+                new JsonStringEnumConverter()
             };
 
         private static readonly Lazy<JsonSerializerOptions> jsonSerializerOptions = new Lazy<JsonSerializerOptions>(() =>
@@ -68,28 +71,28 @@ namespace ChallongeNetCore
 
         internal static IList<Participant> ListOfParticipants(string json)
         {
-            var dummyParticipants = JsonSerializer.Deserialize<List<WrapperParticipant>>(json);
+            var dummyParticipants = JsonSerializer.Deserialize<List<WrapperParticipant>>(json, jsonSerializerOptions.Value);
 
             return dummyParticipants.Select(dummy => dummy.Participant).ToList();
         }
 
         internal static Participant Participant(string json)
         {
-            var result = JsonSerializer.Deserialize<WrapperParticipant>(json);
+            var result = JsonSerializer.Deserialize<WrapperParticipant>(json, jsonSerializerOptions.Value);
 
             return result.Participant;
         }
 
         internal static IList<Match> ListOfMatches(string json)
         {
-            var dummyMatches = JsonSerializer.Deserialize<List<WrapperMatch>>(json);
+            var dummyMatches = JsonSerializer.Deserialize<List<WrapperMatch>>(json, jsonSerializerOptions.Value);
 
             return dummyMatches.Select(dummy => dummy.Match).ToList();
         }
 
         internal static Match Match(string json)
         {
-            var result = JsonSerializer.Deserialize<WrapperMatch>(json);
+            var result = JsonSerializer.Deserialize<WrapperMatch>(json, jsonSerializerOptions.Value);
 
             return result.Match;
         }
@@ -160,9 +163,9 @@ namespace ChallongeNetCore
             }
         }
 
-        private class TournamentRankedByConverter : JsonConverter<TournamentRankedBy>
+        private class TournamentRankedByConverter : JsonConverter<TournamentRankedBy?>
         {
-            public override TournamentRankedBy Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            public override TournamentRankedBy? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
                 if(reader.TokenType == JsonTokenType.String)
                 {
@@ -178,14 +181,14 @@ namespace ChallongeNetCore
                         case "custom":
                             return TournamentRankedBy.Custom;
                         default:
-                            throw new ArgumentException("Unknow Tournament Rank: " + text);
+                            return null;
                     }
                 }
 
                 throw new ArgumentException("Reader is trying to read a non-string element for the TournamentRankedBy enum.");
             }
 
-            public override void Write(Utf8JsonWriter writer, TournamentRankedBy value, JsonSerializerOptions options)
+            public override void Write(Utf8JsonWriter writer, TournamentRankedBy? value, JsonSerializerOptions options)
             {
                 switch (value)
                 {

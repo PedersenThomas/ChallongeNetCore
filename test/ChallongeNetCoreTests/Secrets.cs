@@ -13,7 +13,7 @@ namespace ChallongeNetCoreTests
         static Secrets()
         {
             var configurationBuilder = new ConfigurationBuilder()
-                .AddUserSecrets();
+                .AddUserSecrets<TournamentTest>();
 
             _configuration = configurationBuilder.Build();
         }
