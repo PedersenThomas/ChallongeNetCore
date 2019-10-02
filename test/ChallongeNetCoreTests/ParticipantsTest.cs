@@ -1,4 +1,5 @@
 ﻿using ChallongeNetCore;
+using ChallongeNetCore.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,23 @@ namespace ChallongeNetCoreTests
                 .SendAsync();
 
             Assert.Equal(newName, updatedParticipant.Name);
+        }
+
+        [Fact]
+        public async Task BulkAddParticipant()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            var participants = await client.Participant.BulkAddRequest(this.tournament.Id.ToString())
+                .AddParticipant(new BulkParticipant { Name = "Player1" })
+                .AddParticipant(new BulkParticipant { Name = "Player2" })
+                .SendAsync();
+
+            participants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
+                .SendAsync();
+
+            Assert.Equal(2, participants.Count());
+            Assert.NotNull(participants.SingleOrDefault(p => string.Equals(p.Name, "Player1", StringComparison.OrdinalIgnoreCase)));
+            Assert.NotNull(participants.SingleOrDefault(p => string.Equals(p.Name, "Player2", StringComparison.OrdinalIgnoreCase)));
         }
 
         #region IDisposable Support
