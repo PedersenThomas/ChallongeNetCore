@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ChallongeNetCore
 {
     public class Attachment
     {
-        [JsonProperty(PropertyName = "asset")]
+        [JsonPropertyName("asset")]
         public string Asset { get; set; }
 
-        [JsonProperty(PropertyName = "description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty(PropertyName = "url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
     }
 }

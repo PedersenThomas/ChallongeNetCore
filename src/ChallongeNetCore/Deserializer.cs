@@ -1,137 +1,150 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ChallongeNetCore
 {
 #pragma warning disable 0649
     public class WrapperTournament
     {
-        [JsonProperty(PropertyName = "tournament")]
+        [JsonPropertyName("tournament")]
         public Tournament Tournament { get; set; }
     }
 
     public class WrapperParticipant
     {
-        [JsonProperty(PropertyName = "Participant")]
+        [JsonPropertyName("Participant")]
         public Participant Participant { get; set; }
     }
 
     public class WrapperMatch
     {
-        [JsonProperty(PropertyName = "Match")]
+        [JsonPropertyName("Match")]
         public Match Match { get; set; }
     }
 
     public class WrapperAttachment
     {
-        [JsonProperty(PropertyName = "Attachment")]
+        [JsonPropertyName("Attachment")]
         public Attachment Attachment { get; set; }
     }
 #pragma warning restore 0649
 
     internal static class Deserializer
     {
-        private static readonly JsonConverter[] TournamentConverts =
+        private static readonly JsonConverter[] TournamentConverters =
             {
                 new TournamentRankedByConverter(),
                 new TournamentTypeConverter(),
                 new TournamentStateConverter()
             };
 
+        private static readonly Lazy<JsonSerializerOptions> jsonSerializerOptions = new Lazy<JsonSerializerOptions>(() =>
+        {
+            var options = new JsonSerializerOptions();
+            foreach (var converter in TournamentConverters)
+            {
+                options.Converters.Add(converter);
+            }
+
+            return options;
+        });
+
         internal static IList<Tournament> ListOfTournaments(string json)
         {
-            var dummyTournaments = JsonConvert.DeserializeObject<List<WrapperTournament>>(json, new TournamentRankedByConverter(), new TournamentTypeConverter(), new TournamentStateConverter());
+            var dummyTournaments = JsonSerializer.Deserialize<List<WrapperTournament>>(json, jsonSerializerOptions.Value);
 
             return dummyTournaments.Select(dummy => dummy.Tournament).ToList();
         }
 
         internal static Tournament Tournament(string json)
         {
-            var result = JsonConvert.DeserializeObject<WrapperTournament>(json, TournamentConverts);
+            var result = JsonSerializer.Deserialize<WrapperTournament>(json, jsonSerializerOptions.Value);
 
             return result.Tournament;
         }
 
         internal static IList<Participant> ListOfParticipants(string json)
         {
-            var dummyParticipants = JsonConvert.DeserializeObject<List<WrapperParticipant>>(json);
+            var dummyParticipants = JsonSerializer.Deserialize<List<WrapperParticipant>>(json);
 
             return dummyParticipants.Select(dummy => dummy.Participant).ToList();
         }
 
         internal static Participant Participant(string json)
         {
-            var result = JsonConvert.DeserializeObject<WrapperParticipant>(json);
+            var result = JsonSerializer.Deserialize<WrapperParticipant>(json);
 
             return result.Participant;
         }
 
         internal static IList<Match> ListOfMatches(string json)
         {
-            var dummyMatches = JsonConvert.DeserializeObject<List<WrapperMatch>>(json);
+            var dummyMatches = JsonSerializer.Deserialize<List<WrapperMatch>>(json);
 
             return dummyMatches.Select(dummy => dummy.Match).ToList();
         }
 
         internal static Match Match(string json)
         {
-            var result = JsonConvert.DeserializeObject<WrapperMatch>(json);
+            var result = JsonSerializer.Deserialize<WrapperMatch>(json);
 
             return result.Match;
         }
 
         internal static Attachment Attachment(string json)
         {
-            var result = JsonConvert.DeserializeObject<WrapperAttachment>(json);
+            var result = JsonSerializer.Deserialize<WrapperAttachment>(json);
 
             return result.Attachment;
         }
 
-        private class TournamentTypeConverter : JsonConverter
+        private class TournamentTypeConverter : JsonConverter<TournamentType>
         {
-            /// <summary>
-            /// Writes the JSON representation of the object.
-            /// </summary>
-            /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
-            /// <exception cref="NotImplementedException"></exception>
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            public override TournamentType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                throw new NotImplementedException();
+                if (reader.TokenType == JsonTokenType.String)
+                {
+                    string text = reader.GetString();
+                    switch (text)
+                    {
+                        case "single elimination":
+                            return TournamentType.SingleElimination;
+                        case "double elimination":
+                            return TournamentType.DoubleElimination;
+                        case "round robin":
+                            return TournamentType.RoundRobin;
+                        case "swiss":
+                            return TournamentType.Swiss;
+                        default:
+                            throw new ArgumentException("Unknow Tournament Rank: " + text);
+                    }
+                }
+
+                throw new ArgumentException("Reader is trying to read a non-string element for the TournamentType enum.");
             }
 
-            /// <summary>
-            /// Reads the JSON representation of the object.
-            /// </summary>
-            /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
-            /// <returns>
-            /// The object value.
-            /// </returns>
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            public override void Write(Utf8JsonWriter writer, TournamentType value, JsonSerializerOptions options)
             {
-                var value = reader.Value as string;
-                if (value == "single elimination")
+                switch (value)
                 {
-                    return TournamentType.SingleElimination;
+                    case TournamentType.SingleElimination:
+                        writer.WriteStringValue("single elimination");
+                        break;
+                    case TournamentType.DoubleElimination:
+                        writer.WriteStringValue("double elimination");
+                        break;
+                    case TournamentType.RoundRobin:
+                        writer.WriteStringValue("round robin");
+                        break;
+                    case TournamentType.Swiss:
+                        writer.WriteStringValue("swiss");
+                        break;
+                    default:
+                        throw new ArgumentException("Unknow Tournament Type: " + value);
                 }
-
-                if (value == "double elimination")
-                {
-                    return TournamentType.DoubleElimination;
-                }
-
-                if (value == "round robin")
-                {
-                    return TournamentType.RoundRobin;
-                }
-
-                if (value == "swiss")
-                {
-                    return TournamentType.Swiss;
-                }
-
-                throw new ArgumentException("Unknow Tournament Type: " + value);
             }
 
             /// <summary>
@@ -147,54 +160,50 @@ namespace ChallongeNetCore
             }
         }
 
-        private class TournamentRankedByConverter : JsonConverter
+        private class TournamentRankedByConverter : JsonConverter<TournamentRankedBy>
         {
-            /// <summary>
-            /// Writes the JSON representation of the object.
-            /// </summary>
-            /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
-            /// <exception cref="NotImplementedException"></exception>
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            public override TournamentRankedBy Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                throw new NotImplementedException();
+                if(reader.TokenType == JsonTokenType.String)
+                {
+                    string text = reader.GetString();
+                    switch (text)
+                    {
+                        case "match wins":
+                            return TournamentRankedBy.MatchWins;
+                        case "game wins":
+                            return TournamentRankedBy.GameWins;
+                        case "points scored":
+                            return TournamentRankedBy.PointsScored;
+                        case "custom":
+                            return TournamentRankedBy.Custom;
+                        default:
+                            throw new ArgumentException("Unknow Tournament Rank: " + text);
+                    }
+                }
+
+                throw new ArgumentException("Reader is trying to read a non-string element for the TournamentRankedBy enum.");
             }
 
-            /// <summary>
-            /// Reads the JSON representation of the object.
-            /// </summary>
-            /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
-            /// <returns>
-            /// The object value.
-            /// </returns>
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            public override void Write(Utf8JsonWriter writer, TournamentRankedBy value, JsonSerializerOptions options)
             {
-                var value = reader.Value as string;
-                if (value == null || value == "null")
+                switch (value)
                 {
-                    return null;
+                    case TournamentRankedBy.MatchWins:
+                        writer.WriteStringValue("match wins");
+                        break;
+                    case TournamentRankedBy.GameWins:
+                        writer.WriteStringValue("game wins");
+                        break;
+                    case TournamentRankedBy.PointsScored:
+                        writer.WriteStringValue("points scored");
+                        break;
+                    case TournamentRankedBy.Custom:
+                        writer.WriteStringValue("custom");
+                        break;
+                    default:
+                        throw new NotImplementedException();
                 }
-
-                if (value == "match wins")
-                {
-                    return TournamentRankedBy.MatchWins;
-                }
-
-                if (value == "game wins")
-                {
-                    return TournamentRankedBy.GameWins;
-                }
-
-                if (value == "points scored")
-                {
-                    return TournamentRankedBy.PointsScored;
-                }
-
-                if (value == "custom")
-                {
-                    return TournamentRankedBy.Custom;
-                }
-
-                throw new ArgumentException("Unknow Tournament Rank: " + value);
             }
 
             /// <summary>
@@ -210,49 +219,49 @@ namespace ChallongeNetCore
             }
         }
 
-        private class TournamentStateConverter : JsonConverter
+        private class TournamentStateConverter : JsonConverter<TournamentState>
         {
-            /// <summary>
-            /// Writes the JSON representation of the object.
-            /// </summary>
-            /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
-            /// <exception cref="NotImplementedException"></exception>
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            public override TournamentState Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
             {
-                throw new NotImplementedException();
+                if (reader.TokenType == JsonTokenType.String)
+                {
+                    string text = reader.GetString();
+                    switch (text)
+                    {
+                        case "pending":
+                            return TournamentState.pending;
+                        case "underway":
+                            return TournamentState.underway;
+                        case "awaiting_review":
+                            return TournamentState.awaiting_review;
+                        case "complete":
+                            return TournamentState.complete;
+                        default:
+                            throw new ArgumentException("Unknow Tournament State: " + text);
+                    }
+                }
+
+                throw new ArgumentException("Reader is trying to read a non-string element for the TournamentState enum.");
             }
 
-            /// <summary>
-            /// Reads the JSON representation of the object.
-            /// </summary>
-            /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
-            /// <returns>
-            /// The object value.
-            /// </returns>
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            public override void Write(Utf8JsonWriter writer, TournamentState value, JsonSerializerOptions options)
             {
-                var value = reader.Value as string;
-                if (value == "pending")
+                switch (value)
                 {
-                    return TournamentState.pending;
+                    case TournamentState.pending:
+                        writer.WriteStringValue("pending");
+                        break;
+                    case TournamentState.underway:
+                        writer.WriteStringValue("underway");
+                        break;
+                    case TournamentState.awaiting_review:
+                        writer.WriteStringValue("awaiting_review");
+                        break;
+                    case TournamentState.complete:
+                        writer.WriteStringValue("complete");
+                        break;
                 }
-
-                if (value == "underway")
-                {
-                    return TournamentState.underway;
-                }
-
-                if (value == "awaiting_review")
-                {
-                    return TournamentState.awaiting_review;
-                }
-
-                if (value == "complete")
-                {
-                    return TournamentState.complete;
-                }
-
-                throw new ArgumentException("Unknow Tournament State: " + value);
+                throw new NotImplementedException();
             }
 
             /// <summary>
