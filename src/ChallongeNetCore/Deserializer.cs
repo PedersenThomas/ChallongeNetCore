@@ -40,7 +40,8 @@ namespace ChallongeNetCore
             {
                 new TournamentRankedByConverter(),
                 new TournamentTypeConverter(),
-                new TournamentStateConverter()
+                new TournamentStateConverter(),
+                new JsonStringEnumConverter()
             };
 
         private static readonly Lazy<JsonSerializerOptions> jsonSerializerOptions = new Lazy<JsonSerializerOptions>(() =>
