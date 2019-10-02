@@ -91,19 +91,19 @@ namespace ChallongeNetCore
         public int ProgressMeter { get; set; }
 
         [JsonPropertyName("pts_for_bye")]
-        public float PtsForBye { get; set; }
+        public string PtsForBye { get; set; }
 
         [JsonPropertyName("pts_for_game_tie")]
-        public float PtsForGameTie { get; set; }
+        public string PtsForGameTie { get; set; }
 
         [JsonPropertyName("pts_for_game_win")]
-        public float PtsForGameWin { get; set; }
+        public string PtsForGameWin { get; set; }
 
         [JsonPropertyName("pts_for_match_tie")]
-        public float PtsForMatchTie { get; set; }
+        public string PtsForMatchTie { get; set; }
 
         [JsonPropertyName("pts_for_match_win")]
-        public float PtsForMatchWin { get; set; }
+        public string PtsForMatchWin { get; set; }
 
         [JsonPropertyName("quick_advance")]
         public bool QuickAdvance { get; set; }
@@ -115,16 +115,16 @@ namespace ChallongeNetCore
         public bool RequireScoreAgreement { get; set; }
 
         [JsonPropertyName("rr_pts_for_game_tie")]
-        public float RrPtsForGameTie { get; set; }
+        public string RrPtsForGameTie { get; set; }
 
         [JsonPropertyName("rr_pts_for_game_win")]
-        public float RrPtsForGameWin { get; set; }
+        public string RrPtsForGameWin { get; set; }
 
         [JsonPropertyName("rr_pts_for_match_tie")]
-        public float RrPtsForMatchTie { get; set; }
+        public string RrPtsForMatchTie { get; set; }
 
         [JsonPropertyName("rr_pts_for_match_win")]
-        public float RrPtsForMatchWin { get; set; }
+        public string RrPtsForMatchWin { get; set; }
 
         [JsonPropertyName("sequential_pairings")]
         public bool SequentialPairings { get; set; }
