@@ -87,7 +87,7 @@ namespace ChallongeNetCoreTests
                 .SendAsync();
 
             var matches = await client.Match.IndexRequest(startedTournament.Id.ToString()).SendAsync();
-            Assert.Equal(1, matches.Count());
+            Assert.Single(matches);
 
             var match = matches.First();
             await client.Match.UpdateRequest(startedTournament.Id.ToString(), match.Id)

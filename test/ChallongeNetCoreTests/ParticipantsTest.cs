@@ -42,8 +42,8 @@ namespace ChallongeNetCoreTests
             var allParticipants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
                 .SendAsync();
 
-            Assert.True(allParticipants.Any(p => p.Id == participant1.Id));
-            Assert.True(allParticipants.Any(p => p.Id == participant2.Id));
+            Assert.Contains(allParticipants, p => p.Id == participant1.Id);
+            Assert.Contains(allParticipants, p => p.Id == participant2.Id);
         }
 
         [Fact]
@@ -56,8 +56,8 @@ namespace ChallongeNetCoreTests
             var allParticipants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
                 .SendAsync();
 
-            Assert.True(allParticipants.Any(p => p.Id == participant1.Id));
-            Assert.True(allParticipants.Any(p => p.Id == participant2.Id));
+            Assert.Contains(allParticipants, p => p.Id == participant1.Id);
+            Assert.Contains(allParticipants, p => p.Id == participant2.Id);
         }
 
         [Fact]
