@@ -44,7 +44,23 @@ namespace ChallongeNetCoreTests
             Assert.Equal(this.tournament.Name, expectedTournament.Name);
             Assert.NotNull(expectedTournament.Participants);
         }
-        
+
+        [Fact]
+        public async Task ShowTournamentIncludingParticipants()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            var participant = await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+
+            var expectedTournament = await client.Tournament.ShowRequest(tournament.Id.ToString())
+                .SetIncludeParticipants(true)
+                .SendAsync();
+
+            Assert.NotNull(expectedTournament);
+            Assert.Equal(this.tournament.Name, expectedTournament.Name);
+            Assert.NotNull(expectedTournament.Participants);
+            Assert.Single(expectedTournament.Participants);
+        }
+
         [Fact]
         public async Task UpdateTournament() {
             this.tournament = await TestHelper.CreateTestTournamentAsync(client);

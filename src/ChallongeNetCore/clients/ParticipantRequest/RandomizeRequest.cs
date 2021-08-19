@@ -21,7 +21,7 @@ namespace ChallongeNetCore.clients.ParticipantRequest
         public async Task<IList<Participant>> SendAsync()
         {
             string apiUrl = $"/tournaments/{this.TournamentIdentifier}/participants/randomize";
-            const string method = "POST ";
+            const string method = "POST";
             var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, parameters);
             return Deserializer.ListOfParticipants(jsonString);
         }
