@@ -1,5 +1,6 @@
 ﻿using ChallongeNetCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,8 +43,8 @@ namespace ChallongeNetCoreTests
             var allParticipants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
                 .SendAsync();
 
-            Assert.True(allParticipants.Any(p => p.Id == participant1.Id));
-            Assert.True(allParticipants.Any(p => p.Id == participant2.Id));
+            Assert.Contains(allParticipants, p => p.Id == participant1.Id);
+            Assert.Contains(allParticipants, p => p.Id == participant2.Id);
         }
 
         [Fact]
@@ -56,8 +57,8 @@ namespace ChallongeNetCoreTests
             var allParticipants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
                 .SendAsync();
 
-            Assert.True(allParticipants.Any(p => p.Id == participant1.Id));
-            Assert.True(allParticipants.Any(p => p.Id == participant2.Id));
+            Assert.Contains(allParticipants, p => p.Id == participant1.Id);
+            Assert.Contains(allParticipants, p => p.Id == participant2.Id);
         }
 
         [Fact]
@@ -72,6 +73,38 @@ namespace ChallongeNetCoreTests
                 .SendAsync();
 
             Assert.Equal(newName, updatedParticipant.Name);
+        }
+
+        [Fact]
+        public async Task RandomizeParticipants()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            for (int i = 0; i < 16; i++)
+            {
+                await TestHelper.CreateTestParticipantAsync(client, this.tournament);
+            }
+
+            var allParticipants = await client.Participant.IndexRequest(this.tournament.Id.ToString())
+                .SendAsync();
+
+            var randomizeRequest = await client.Participant.RandomizeRequest(this.tournament.Id.ToString())
+                .SendAsync();
+
+            Assert.False(IsSameOrder(allParticipants, randomizeRequest));
+        }
+
+        private bool IsSameOrder(IList<Participant> a, IList<Participant> b)
+        {
+            Assert.Equal(a.Count, b.Count);
+
+            for (int i = 0; i < a.Count; i++)
+            {
+                if(a[i].Id != b[i].Id)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         #region IDisposable Support
