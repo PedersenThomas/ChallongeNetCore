@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ChallongeNetCore
@@ -99,7 +99,7 @@ namespace ChallongeNetCore
 
         private HttpContent constructJsonContent(IDictionary<string, dynamic> dictionary)
         {
-            var json = JsonConvert.SerializeObject(dictionary);
+            var json = JsonSerializer.Serialize(dictionary);
             HttpContent content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             

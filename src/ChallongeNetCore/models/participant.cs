@@ -1,97 +1,96 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ChallongeNetCore
 {
     public class Participant
     {
-        [JsonProperty(PropertyName = "active")]
+        [JsonPropertyName("active")]
         public bool Active { get; set; }
 
-        [JsonProperty(ItemConverterType = typeof(IsoDateTimeConverter), PropertyName = "checked_in_at")]
+        [JsonPropertyName("checked_in_at")]
         public DateTime? CheckedInAt { get; set; }
 
-        [JsonProperty(PropertyName = "checked_in")]
+        [JsonPropertyName("checked_in")]
         public bool CheckedIn { get; set; }
 
-        [JsonProperty(ItemConverterType = typeof(IsoDateTimeConverter), PropertyName = "created_at")]
+        [JsonPropertyName("created_at")]
         public DateTime? CreatedAt { get; set; }
 
-        [JsonProperty(PropertyName = "final_rank")]
+        [JsonPropertyName("final_rank")]
         public string FinalRank { get; set; }
 
-        [JsonProperty(PropertyName = "group_id")]
+        [JsonPropertyName("group_id")]
         public string GroupId { get; set; }
 
-        [JsonProperty(PropertyName = "icon")]
+        [JsonPropertyName("icon")]
         public string Icon { get; set; }
 
-        [JsonProperty(PropertyName = "id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
 
-        [JsonProperty(PropertyName = "invitation_id")]
+        [JsonPropertyName("invitation_id")]
         public int? InvitationId { get; set; }
 
-        [JsonProperty(PropertyName = "invite_email")]
+        [JsonPropertyName("invite_email")]
         public string InviteEmail { get; set; }
 
-        [JsonProperty(PropertyName = "matches")]
+        [JsonPropertyName("matches")]
         public List<WrapperMatch> Matches { get; set; }
 
-        [JsonProperty(PropertyName = "misc")]
+        [JsonPropertyName("misc")]
         public string Misc { get; set; }
 
-        [JsonProperty(PropertyName = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "on_waiting_list")]
+        [JsonPropertyName("on_waiting_list")]
         public bool OnWaitingList { get; set; }
 
-        [JsonProperty(PropertyName = "seed")]
+        [JsonPropertyName("seed")]
         public int Seed { get; set; }
 
-        [JsonProperty(PropertyName = "tournament_id")]
+        [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
-        [JsonProperty(ItemConverterType = typeof(IsoDateTimeConverter), PropertyName = "updated_at")]
+        [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 
-        [JsonProperty(PropertyName = "challonge_username")]
+        [JsonPropertyName("challonge_username")]
         public string ChallongeUsername { get; set; }
 
-        [JsonProperty(PropertyName = "challonge_email_address_verified")]
+        [JsonPropertyName("challonge_email_address_verified")]
         public bool? ChallongeEmailAddressVerified { get; set; }
 
-        [JsonProperty(PropertyName = "removable")]
+        [JsonPropertyName("removable")]
         public bool Removable { get; set; }
 
-        [JsonProperty(PropertyName = "participatable_or_invitation_attached")]
+        [JsonPropertyName("participatable_or_invitation_attached")]
         public bool ParticipatableOrInvitationAttached { get; set; }
 
-        [JsonProperty(PropertyName = "confirm_remove")]
+        [JsonPropertyName("confirm_remove")]
         public bool ConfirmRemove { get; set; }
 
-        [JsonProperty(PropertyName = "invitation_pending")]
+        [JsonPropertyName("invitation_pending")]
         public bool InvitationPending { get; set; }
 
-        [JsonProperty(PropertyName = "display_name_with_invitation_email_address")]
+        [JsonPropertyName("display_name_with_invitation_email_address")]
         public string DisplayNameWithInvitationEmailAddress { get; set; }
 
-        [JsonProperty(PropertyName = "email_hash")]
+        [JsonPropertyName("email_hash")]
         public string EmailHash { get; set; }
 
-        [JsonProperty(PropertyName = "username")]
+        [JsonPropertyName("username")]
         public string Username { get; set; }
 
-        [JsonProperty(PropertyName = "attached_user_portrait_url")]
+        [JsonPropertyName("attached_user_portrait_url")]
         public string AttachedUserPortraitUrl { get; set; }
 
-        [JsonProperty(PropertyName = "can_check_in")]
+        [JsonPropertyName("can_check_in")]
         public bool CanCheckIn { get; set; }
 
-        [JsonProperty(PropertyName = "reactivatable")]
+        [JsonPropertyName("reactivatable")]
         public bool Reactivatable { get; set; }
     }
 }
