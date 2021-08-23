@@ -38,7 +38,7 @@ namespace ChallongeNetCore
         public ParticipantClient Participant { get; private set; }
         public MatchClient Match { get; private set; }
 
-        internal async Task<string> MakeJSONRequestAsync(string apiUrl, string httpMethod, IDictionary<string, dynamic> Parameters = null)
+        internal async Task<string> MakeJSONRequestAsync(string apiUrl, string httpMethod, IDictionary<string, dynamic> Parameters = null, IDictionary<string, dynamic> queryParameters = null)
         {
             const string ResponseType = "json";
             var url = string.Format("{0}{1}.{2}", BaseUrl, apiUrl, ResponseType);
@@ -48,12 +48,14 @@ namespace ChallongeNetCore
                 ApplyAuth(client);
 
                 HttpContent content = null;
+                bool containsQueryParameters = false;
                 switch (httpMethod)
                 {
                     case "GET":
                         if (Parameters != null && Parameters.Count > 0)
                         {
                             url += "?" + this.DictionaryQuerystring(Parameters);
+                            containsQueryParameters = true;
                         }
 
                         break;
@@ -64,6 +66,11 @@ namespace ChallongeNetCore
                         break;
                     default:
                         throw new ChallongeException("Unknown HttpMethod: " + httpMethod);
+                }
+
+                if(queryParameters != null && queryParameters.Count > 0)
+                {
+                    url += (containsQueryParameters ? "&" : "?") + this.DictionaryQuerystring(queryParameters);
                 }
                 DebugWriteline?.Invoke(httpMethod + " " + url);
 

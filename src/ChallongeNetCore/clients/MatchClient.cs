@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCore
+﻿namespace ChallongeNetCore
 {
     public class MatchClient
     {
@@ -44,6 +39,39 @@ namespace ChallongeNetCore
         public clients.MatchRequest.UpdateRequest UpdateRequest(string tournamentIdentifier, int matchId)
         {
             return new clients.MatchRequest.UpdateRequest(this.connection, tournamentIdentifier, matchId);
+        }
+
+        /// <summary>
+        /// Reopens a match that was marked completed, automatically resetting matches that follow it
+        /// </summary>
+        /// <param name="tournamentIdentifier"></param>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        public clients.MatchRequest.ReopenRequest ReopenRequest(string tournamentIdentifier, int matchId)
+        {
+            return new clients.MatchRequest.ReopenRequest(this.connection, tournamentIdentifier, matchId);
+        }
+
+        /// <summary>
+        /// Sets "underway_at" to the current time and highlights the match in the bracket
+        /// </summary>
+        /// <param name="tournamentIdentifier"></param>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        public clients.MatchRequest.MarkUnderwayRequest MarkUnderwayRequest(string tournamentIdentifier, int matchId)
+        {
+            return new clients.MatchRequest.MarkUnderwayRequest(this.connection, tournamentIdentifier, matchId);
+        }
+
+        /// <summary>
+        /// Clears "underway_at" and unhighlights the match in the bracket
+        /// </summary>
+        /// <param name="tournamentIdentifier"></param>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
+        public clients.MatchRequest.UnmarkUnderwayRequest UnmarkUnderwayRequest(string tournamentIdentifier, int matchId)
+        {
+            return new clients.MatchRequest.UnmarkUnderwayRequest(this.connection, tournamentIdentifier, matchId);
         }
     }
 }

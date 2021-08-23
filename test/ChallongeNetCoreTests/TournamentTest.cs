@@ -8,13 +8,15 @@ namespace ChallongeNetCoreTests
 {
     public class TournamentTest: IDisposable
     {
-        private ChallongeV1Connection client;
+        private readonly ChallongeV1Connection client;
         private Tournament tournament;
 
         public TournamentTest(Xunit.Abstractions.ITestOutputHelper output)
         {
-            client = new ChallongeV1Connection(Secrets.ChallongeUsername, Secrets.ChallongeApiKey);
-            client.DebugWriteline = output.WriteLine;
+            client = new ChallongeV1Connection(Secrets.ChallongeUsername, Secrets.ChallongeApiKey)
+            {
+                DebugWriteline = output.WriteLine
+            };
         }
         
         [Fact]
@@ -135,7 +137,6 @@ namespace ChallongeNetCoreTests
 
             Assert.Equal(TournamentState.pending, resetTournament.Tournamentstate);
         }
-
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

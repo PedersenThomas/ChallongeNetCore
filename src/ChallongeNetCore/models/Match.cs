@@ -66,6 +66,9 @@ namespace ChallongeNetCore
         [JsonPropertyName("tournament_id")]
         public int TournamentId { get; set; }
 
+        [JsonPropertyName("underway_at")]
+        public DateTime? UnderwayAt { get; set; }
+
         [JsonPropertyName("updated_at")]
         public DateTime? UpdatedAt { get; set; }
 

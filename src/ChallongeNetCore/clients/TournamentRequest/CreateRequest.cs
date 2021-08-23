@@ -44,8 +44,6 @@ namespace ChallongeNetCore.clients.TournamentRequest
         public CreateRequest SetStartAt(DateTime value) { parameters["start_at"] = value; return this; }
         public CreateRequest SetCheckInDuration(int value) { parameters["check_in_duration"] = value; return this; }
 
-
-
         public async Task<Tournament> SendAsync()
         {
             const string apiUrl = "/tournaments";
