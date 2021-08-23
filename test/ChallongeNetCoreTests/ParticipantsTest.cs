@@ -11,13 +11,15 @@ namespace ChallongeNetCoreTests
     public class ParticipantsTest : IDisposable
     {
 
-        private ChallongeV1Connection client;
+        private readonly ChallongeV1Connection client;
         private Tournament tournament;
 
         public ParticipantsTest(Xunit.Abstractions.ITestOutputHelper output)
         {
-            client = new ChallongeV1Connection(Secrets.ChallongeUsername, Secrets.ChallongeApiKey);
-            client.DebugWriteline = output.WriteLine;
+            client = new ChallongeV1Connection(Secrets.ChallongeUsername, Secrets.ChallongeApiKey)
+            {
+                DebugWriteline = output.WriteLine
+            };
         }
 
         [Fact]
