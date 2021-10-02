@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCore.clients.TournamentRequest
+﻿namespace ChallongeNetCore.clients.TournamentRequest
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class ShowRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
@@ -18,6 +18,7 @@ namespace ChallongeNetCore.clients.TournamentRequest
         }
 
         public ShowRequest SetIncludeParticipants(bool value) { parameters["include_participants"] = value ? 1 : 0; return this; }
+
         public ShowRequest SetIncludeMatches(bool value) { parameters["include_matches"] = value ? 1 : 0; return this; }
         
         public async Task<Tournament> SendAsync()

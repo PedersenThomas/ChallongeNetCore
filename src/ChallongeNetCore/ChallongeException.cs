@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace ChallongeNetCore
+﻿namespace ChallongeNetCore
 {
+    using System;
+
     public class ChallongeException : Exception
     {
         public ChallongeException()

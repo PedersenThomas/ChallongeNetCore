@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCore.clients.MatchRequest
+﻿namespace ChallongeNetCore.clients.MatchRequest
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class ShowRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
         public ChallongeV1Connection connection { get; private set; }
+
         public string TournamentIdentifier { get; private set; }
+
         public int MatchId { get; private set; }
 
         public ShowRequest(ChallongeV1Connection connection, string tournamentIdentifier, int matchId)

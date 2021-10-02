@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-
-namespace ChallongeNetCore
+﻿namespace ChallongeNetCore
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.Json.Serialization;
+
     public class Participant
     {
         [JsonPropertyName("active")]

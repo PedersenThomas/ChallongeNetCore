@@ -1,11 +1,11 @@
-﻿using ChallongeNetCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Xunit;
-
-namespace ChallongeNetCoreTests
+﻿namespace ChallongeNetCoreTests
 {
+    using ChallongeNetCore;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Xunit;
+
     public class TournamentTest: IDisposable
     {
         private readonly ChallongeV1Connection client;

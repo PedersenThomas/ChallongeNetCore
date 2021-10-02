@@ -1,7 +1,7 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ChallongeNetCore
+﻿namespace ChallongeNetCore
 {
+    using System.Text.Json.Serialization;
+
     public class Attachment
     {
         [JsonPropertyName("asset")]

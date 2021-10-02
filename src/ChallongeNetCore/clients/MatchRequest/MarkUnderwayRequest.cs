@@ -8,7 +8,9 @@
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
         public ChallongeV1Connection Connection { get; private set; }
+
         public string TournamentIdentifier { get; private set; }
+
         public int MatchId { get; private set; }
 
         public MarkUnderwayRequest(ChallongeV1Connection connection, string tournamentIdentifier, int matchId)

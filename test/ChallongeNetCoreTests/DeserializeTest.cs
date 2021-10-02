@@ -1,12 +1,9 @@
-﻿using ChallongeNetCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Xunit;
-
-namespace ChallongeNetCoreTests
+﻿namespace ChallongeNetCoreTests
 {
+    using ChallongeNetCore;
+    using System.Linq;
+    using Xunit;
+
     public class DeserializeTest
     {
         [Fact]

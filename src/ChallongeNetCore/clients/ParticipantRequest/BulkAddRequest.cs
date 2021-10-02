@@ -17,6 +17,14 @@
             this.TournamentIdentifier = tournamentIdentifier;
         }
 
+        /// <summary>
+        /// Add a participant to the request.
+        /// </summary>
+        /// <param name="name">Name of the participant</param>
+        /// <param name="inviteNameOrEmail">Email of the participant. If they have a Challonge Account then they will be asked to accept it, otherwise they will receive an email to join challonge</param>
+        /// <param name="seed">Seed of the participant.</param>
+        /// <param name="misc">Extra information about the participant.</param>
+        /// <returns></returns>
         public BulkAddRequest AddParticipant(string name, string inviteNameOrEmail, int seed, string misc)
         {
             participants.Add(new BulkParticipant(name, inviteNameOrEmail, seed, misc));
