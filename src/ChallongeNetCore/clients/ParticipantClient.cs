@@ -72,7 +72,16 @@
             return new clients.ParticipantRequest.RandomizeRequest(this.connection, tournamentIdentifier);
         }
 
-        //Bulk Add
+        /// <summary>
+        /// Randomize seeds among participants. Only applicable before a tournament has started.
+        /// </summary>
+        /// <param name="tournamentIdentifier">Tournament ID (e.g. 10230) or URL (e.g. 'single_elim' for challonge.com/single_elim). If assigned to a subdomain, URL format must be subdomain-tournament_url (e.g. 'test-mytourney' for test.challonge.com/mytourney)</param>
+        /// <returns></returns>
+        public clients.ParticipantRequest.BulkAddRequest BulkAddeRequest(string tournamentIdentifier)
+        {
+            return new clients.ParticipantRequest.BulkAddRequest(this.connection, tournamentIdentifier);
+        }
+
         //Check in
         //Undo Check in
     }
