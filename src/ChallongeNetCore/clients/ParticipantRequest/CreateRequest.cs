@@ -27,7 +27,6 @@ namespace ChallongeNetCore.clients.ParticipantRequest
         {
             string apiUrl = $"/tournaments/{TournamentIdentifier}/participants";
             const string method = "POST";
-            var finalParameters = new Dictionary<string, dynamic> { { "participant", parameters } };
             var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, parameters);
             return Deserializer.Participant(jsonString);
         }
