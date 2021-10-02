@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace ChallongeNetCoreTests
+﻿namespace ChallongeNetCoreTests
 {
+    using Microsoft.Extensions.Configuration;
+
     public static class Secrets
     {
         public static string ChallongeUsername { get { return _configuration["challonge_username"]; } }

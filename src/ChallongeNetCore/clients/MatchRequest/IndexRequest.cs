@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCore.clients.MatchRequest
+﻿namespace ChallongeNetCore.clients.MatchRequest
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class IndexRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
         public ChallongeV1Connection connection { get; private set; }
+
         public string TournamentIdentifier { get; private set; }
 
         public IndexRequest(ChallongeV1Connection connection, string tournamentIdentifier)
@@ -19,6 +18,7 @@ namespace ChallongeNetCore.clients.MatchRequest
         }
 
         public IndexRequest setState(MatchIndexState value) { parameters["state"] = value; return this; }
+
         public IndexRequest setParticipantId(int value) { parameters["participant_id"] = value; return this; }
 
         public async Task<IEnumerable<Match>> SendAsync()

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Text.Json.Serialization;
-
-namespace ChallongeNetCore
+﻿namespace ChallongeNetCore
 {
+    using System;
+    using System.Text.Json.Serialization;
+
     public enum MatchState
     {
         pending,

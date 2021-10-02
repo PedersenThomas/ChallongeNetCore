@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace ChallongeNetCore
+﻿namespace ChallongeNetCore
 {
+    using System;
+
     public static class TournamentRankedByExtensions
     {
         public static string ToChallongeString(this TournamentRankedBy item)

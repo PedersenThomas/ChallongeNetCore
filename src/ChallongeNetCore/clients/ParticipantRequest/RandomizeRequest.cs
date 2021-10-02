@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCore.clients.ParticipantRequest
+﻿namespace ChallongeNetCore.clients.ParticipantRequest
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class RandomizeRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
         public ChallongeV1Connection Connection { get; private set; }
+
         public string TournamentIdentifier { get; private set; }
 
         public RandomizeRequest(ChallongeV1Connection connection, string tournamentIdentifier)

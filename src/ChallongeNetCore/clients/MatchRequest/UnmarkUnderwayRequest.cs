@@ -1,8 +1,6 @@
 ﻿namespace ChallongeNetCore.clients.MatchRequest
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
 
     public class UnmarkUnderwayRequest
@@ -10,7 +8,9 @@
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
         public ChallongeV1Connection Connection { get; private set; }
+
         public string TournamentIdentifier { get; private set; }
+
         public int MatchId { get; private set; }
 
         public UnmarkUnderwayRequest(ChallongeV1Connection connection, string tournamentIdentifier, int matchId)

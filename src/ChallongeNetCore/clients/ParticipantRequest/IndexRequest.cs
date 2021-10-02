@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCore.clients.ParticipantRequest
+﻿namespace ChallongeNetCore.clients.ParticipantRequest
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class IndexRequest
     {
         private IDictionary<string, dynamic> parameters = new Dictionary<string, dynamic>();
 
         public ChallongeV1Connection Connection { get; private set; }
+
         public string TournamentIdentifier { get; private set; }
 
         public IndexRequest(ChallongeV1Connection connection, string tournamentIdentifier)

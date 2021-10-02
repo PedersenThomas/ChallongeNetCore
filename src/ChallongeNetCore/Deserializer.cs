@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
-[assembly: InternalsVisibleTo("ChallongeNetCoreTests")]
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("ChallongeNetCoreTests")]
 namespace ChallongeNetCore
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
+
 #pragma warning disable 0649
     public class WrapperTournament
     {

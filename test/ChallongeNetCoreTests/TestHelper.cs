@@ -1,10 +1,10 @@
-﻿using ChallongeNetCore;
-using System;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChallongeNetCoreTests
+﻿namespace ChallongeNetCoreTests
 {
+    using ChallongeNetCore;
+    using System;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public static class TestHelper
     {
         private static readonly Random Random = new Random((int)DateTime.Now.Ticks); // Thanks to McAden
