@@ -17,19 +17,20 @@
             this.TournamentIdentifier = tournamentIdentifier;
         }
 
-        public void AddParticipant(string name, string inviteNameOrEmail, int seed, string misc)
+        public BulkAddRequest AddParticipant(string name, string inviteNameOrEmail, int seed, string misc)
         {
             participants.Add(new BulkParticipant(name, inviteNameOrEmail, seed, misc));
+            return this;
         }
 
-        public async Task<string> SendAsync()
+        public async Task<IList<Participant>> SendAsync()
         {
             string apiUrl = $"/tournaments/{TournamentIdentifier}/participants/bulk_add";
             const string method = "POST";
             var parameters = new Dictionary<string, dynamic>();
             parameters["participants"] = participants;
             var jsonString = await Connection.MakeJSONRequestAsync(apiUrl, method, parameters);
-            return jsonString;
+            return Deserializer.ListOfParticipants(jsonString);
         }
 
         private class BulkParticipant

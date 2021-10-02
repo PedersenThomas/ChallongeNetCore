@@ -95,6 +95,23 @@ namespace ChallongeNetCoreTests
             Assert.False(IsSameOrder(allParticipants, randomizeRequest));
         }
 
+        [Fact]
+        public async Task BulkAddParticipants()
+        {
+            this.tournament = await TestHelper.CreateTestTournamentAsync(client);
+            var participant1Name = TestHelper.RandomName();
+            var participant2Name = TestHelper.RandomName();
+            var participants = await client.Participant.BulkAddRequest(this.tournament.Id.ToString())
+                .AddParticipant(participant1Name, null, 1, "")
+                .AddParticipant(participant2Name, null, 1, "")
+                .SendAsync();
+
+            Assert.NotNull(participants);
+            Assert.Equal(2, participants.Count);
+            Assert.Contains(participants, p => p.Name == participant1Name);
+            Assert.Contains(participants, p => p.Name == participant2Name);
+        }
+
         private bool IsSameOrder(IList<Participant> a, IList<Participant> b)
         {
             Assert.Equal(a.Count, b.Count);
